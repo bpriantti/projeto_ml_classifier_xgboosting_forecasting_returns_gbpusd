@@ -1,4 +1,4 @@
-# Projeto ML Clustering de Indicadores de Timming para Estrategia de Quant Trading.
+# Projeto Ml Classifier XGboosting Forecasting Returns - GBPUSD
 
 __Bussines Problem:__
 
