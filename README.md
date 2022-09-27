@@ -36,13 +36,8 @@ ___
  - [Data Request](#data-request) 
  - [Data Wralling](#data-wralling)
  - [Data Visualization](#data-visualization)
- - [Feature Calculation](#feature-calculation)
- - [Train Test Split](#train-test-split)
- - [Elbow Method Clusters](#elbow-method-clusters)
- - [Treinando Modelo K-Means](#treinando-modelo-k-means)
- - [Bivariate Analisys](#bivariate-analisys)
- - [Backtest Base de Teste](#backtest-base-de-teste)
- - [Backtest Base Completa](#backtest-base-completa)
+ - [Target Var Calc](#target-var-calc)
+ - [Feature Eng](#feature-eng)
 
 ### Importando Libraries:
 > inicialmente para este projeto realizou-se o import das bibliotecas que serao utilizadas para machine learning, data wralling e data visualization dos dados, utilizou-se os comandos abaixo para esta etapa:
@@ -106,121 +101,58 @@ data = data['1995':]
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-01.png?raw=true"  width="800" height = "460">
    
 
-   
 ### Target Var Calc: 
 
-> Nesta Etapa realizou-se o cálculo da variável alvo, esta que será passada como base para o aprendizado supervisionado do modelo xg boosting, neste projeto a variavel target é o retorno futuro em 2 dias em Pips.
+> Nesta Etapa realizou-se o cálculo da variável alvo, esta que será passada como base para o aprendizado supervisionado do modelo xg boosting, neste projeto a variável target é o retorno futuro em 2 dias em Pips, em seguida analisou-se a distribuição da variável alvo.
 
 ```
 # Construcao dos alvos
 periodos = 2
 
-# Alvo 1 - Retorno
+# target %
 database["target"] = database["close"].pct_change(periodos).shift(-periodos)
 
-# Variaçao em Pips do alvo
+# target em pips
 database["target_pips"] = ((database["close"] - database["close"].shift(periodos))*10000).shift(-periodos)
 ```
 
 <p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-2.PNG?raw=true"  width="800" height = "460">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-02.png?raw=true"  width="800" height = "400">
  
- ### Train-Test Split:
+ > Analisando a distribuição da variável alvo optou-se por realizar a classificação da mesma em:
  
- > Para realizar o treino e em seguida o teste do modelo, realizou-se a divisão da base em data-train e data-test.
+ -  1: alta em 2 dias.
+ -  0: variacoes entre -50 a 50 pips, em 2 dias.
+ - -1: baixa em 2 dias.
  
-```
-#data train-test split:
-data_train = database.loc['2005-02-14':'2012-12-31']
-data_test = database.loc['2013-01-01':]
-
-#features x, train-test:
-x_train = data_train.loc[:,'adx':'neg_dir_mov']
-x_test = data_test.loc[:,'adx':'neg_dir_mov']
-```
-
-### Elbow Method Clusters:
-
-> Utilizou-se o método de elbow method para verificar o número de clusters necessário, verificou-se que clusters entre 4 e 6 demonstraram bons resultados de agrupamento:
-   
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-3.png?raw=true"  width="800" height = "460">
-
-### Treinando Modelo K-Means:
-
-> Em seguida realizou-se o treinando do modelo com 5 clusters, e visualizou-se os clusters em um plot 3d e também o histograma de frequência para os clusters. 
-
-```
-#fit k-means model:
-kmodel = KMeans(n_clusters = 5, random_state = 1)
-clusters = kmodel.fit(k)
-```
-
-```
-#data visualization:
-df = data_train.loc[:,'adx':]
-
-fig = px.scatter_3d(df, x='pos_dir_mov', y='neg_dir_mov', z='adx',
-                    color='clusters',height=500, width=800, title = 'Clusters Plot: ')
-
-fig.update_layout(margin=dict(l=10, r=10, t=50, b=10))
-
-fig.show()
-```
-- Clusters Plot:
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/cluster_3d.png?raw=true"  width="740" height = "460">
-
-- Histograma Frequencia Clusters:
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-4.PNG?raw=true"  width="680" height = "300">
-
-### Bivariate Analisys:
-
-> Com o objetivo de verificar qual cluster teve a melhor performance como regra de negociação, realizou-se uma análise bivariada entre os clusters e a mediana dos retornos futuros em 2 dias, em seguida utilizou-se os comandos sort para rankear os clusters em mais e menos lucrativos, como demonstrado na imagem abaixo.
-
-```
-#acessando os clusters
-data_train['clusters'] = clusters.labels_
-
-#rank por mediana:
-rank = data_train[['target_var','clusters']].groupby(['clusters']).median()
-rank.sort_values(by = ['target_var'], ascending = False)*100
-
-#plot:
-cmap = sns.diverging_palette(10, 133, as_cmap=True)
-g = sns.heatmap(data= rank.sort_values(by = ['target_var'], ascending = False), cmap='coolwarm_r',cbar=True,linewidths=.1,annot=True,fmt=".1%",annot_kws={'rotation':0},center=0.00,xticklabels=True)
-g.figure.set_size_inches(w=27/2.54, h=18/2.54)
-g.set_xticklabels(g.get_xticklabels(), rotation = 0, fontsize = 10)
-g.set_title('Rank Clusters Mediana Retornos Futuros')
-plt.show();
-```
-   
-- Rank Clusters Mediana Retornos Futuros:   
-   
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-5.PNG?raw=true"  width="400" height = "320">
-
-> Utilizou-se como regra de negociação, comprar a ação quando o clusters for 0,3 e vender quando o cluster for 4.
-   
-### Backtest Base de Teste:
-   
-> Verificando histograma de frequencia base de teste:
+ para isso utilizou-se o código a seguir:
  
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-6.png?raw=true"  width="680" height = "400">
-   
-- Backtest em juros simples para a base de test:
-
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-7.png?raw=true"  width="680" height = "400">
-   
-### Backtest Base Completa:
-
-> Em seguida realizou-se o backtest para a base completa, realizando o sizing de 30% alocado por negociação de um capital de R$ 100.000,00, obteve-se um lucro líquido fictício aproximado de 270.000,00 para um drawdown máximo de 10%.  
-   
-<p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-8.png?raw=true"  width="680" height = "440">
-   
+ ```
+# criacao do alvo binario:
+database["target_bin"] = np.where(database['target_pips'] >  50 , 1, 0)
+database["target_bin"] = np.where(database['target_pips'] < -50 ,-1, database['target_bin'])
+```
  
+ ### Feature Eng:
  
+> A próxima etapa para o projeto é o processo de feature engineering que consiste em calcular as features para o modelo, estas que também são chamadas de variáveis dependentes, para isso utilizou-se o código a seguir:
+
+```
+#---:
+def calc_features(df1):
+
+    df1['var_1'] = ta.ADX(df1['high'],df1['low'],df1['close'],14)
+    df1['var_2'] = ta.PLUS_DI(df1['high'],df1['low'],df1['close'],14)
+    df1['var_3'] = ta.MINUS_DI(df1['high'],df1['low'],df1['close'],14)
+
+    df1.dropna(inplace = True)
+    return df1
+
+dados = calc_features(database.copy())
+```
+> Obs: Para este projeto devido a particularidade do indicador adx, di + e di- variam em um range de 0 a 100 para a toda a base de dados, não é necessário o uso de filtros, normatizações, min-max scaler e discretização das features.
+
+## Analise Correl Features:
+
+> Em seguida analisou-se a correlação entre as features para um modelo com uma resposta estável torna-se interessante que as features sejam descorrelacionadas entre si, abaixo segue a tabela com os dados da correlação entre as features:
+
