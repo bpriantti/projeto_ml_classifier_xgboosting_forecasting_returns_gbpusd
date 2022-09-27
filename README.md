@@ -38,6 +38,8 @@ ___
  - [Data Visualization](#data-visualization)
  - [Target Var Calc](#target-var-calc)
  - [Feature Eng](#feature-eng)
+ - [Analise Correl Features](#analise-correl-features)
+ - [Train Test Split](#train-test-split)
 
 ### Importando Libraries:
 > inicialmente para este projeto realizou-se o import das bibliotecas que serao utilizadas para machine learning, data wralling e data visualization dos dados, utilizou-se os comandos abaixo para esta etapa:
@@ -152,7 +154,32 @@ dados = calc_features(database.copy())
 ```
 > Obs: Para este projeto devido a particularidade do indicador adx, di + e di- variam em um range de 0 a 100 para a toda a base de dados, não é necessário o uso de filtros, normatizações, min-max scaler e discretização das features.
 
-## Analise Correl Features:
+### Analise Correl Features:
 
 > Em seguida analisou-se a correlação entre as features para um modelo com uma resposta estável torna-se interessante que as features sejam descorrelacionadas entre si, abaixo segue a tabela com os dados da correlação entre as features:
 
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-05.PNG?raw=true"  width="380" height = "160">
+   
+### Train Test Split:
+
+> kjj
+
+```
+#x-y split:
+y = dados.loc[:,'target_pips':'target_bin']
+X = dados.loc[:,'var_1':]
+
+# Vamos treinar o modelo de 2009 a 2013
+start_train = '1995'
+end_train   = '2010'
+
+# Vamos testar o modelo de 2014 a 2019
+start_test = '2011'
+
+y_train = y[start_train:end_train]
+y_test  = y[start_test:]
+
+x_train = X[start_train:end_train]
+x_test  = X[start_test:] 
+```
