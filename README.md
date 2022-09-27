@@ -40,6 +40,10 @@ ___
  - [Feature Eng](#feature-eng)
  - [Analise Correl Features](#analise-correl-features)
  - [Train Test Split](#train-test-split)
+ - [Treinando Avaliando XGboosting](#treinando-avaliando-xgboosting)
+ - [Verificando Feature Importance](#verificando-feature-importance)
+ - [Backtest Modelo](#backtest-modelo)
+ - [Research Tuning XGboost Parâmetros](#research-tuning-xgboost-parâmetros)
 
 ### Importando Libraries:
 > inicialmente para este projeto realizou-se o import das bibliotecas que serao utilizadas para machine learning, data wralling e data visualization dos dados, utilizou-se os comandos abaixo para esta etapa:
@@ -189,7 +193,7 @@ x_test  = X[start_test:]
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-06.PNG?raw=true" width="800" height = "400">
 
-### Treinando XGboosting:
+### Treinando-Avaliando XGboosting:
 
 ```
 #import XGBoost:
@@ -239,3 +243,21 @@ __Resultado:__
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-07.PNG?raw=true" width="400" height = "400">
    
 > Observou-se os parâmetros do modelo e verificou-se que para houve uma diferença entre as métricas para o treinamento e para o teste, isto se deve a grande componente aleatória para ativos no mercado financeiro, no entanto observamos que para o teste o modelo tem um recall e um precision médio de 0.30 para a compra e venda o que totaliza um accuracy médio de 0.60 para o modelo, podendo assim ser útil observar o desempenho do modelo em um backtest e verificar o retorno da abordagem.
+
+### Verificando Feature Importance:
+   
+> O XGboosting é uma excelente ferramenta também para análise bivariada das features com a variável alvo, verificou-se o feature importance para as features no entanto como são poucas não optou-se por retirar alguma feature e retreinar o modelo.
+   
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-08.PNG?raw=true" width="600" height = "300">
+   
+### Backtest Modelo:
+   
+> Para verificar a performance do algoritmo como estratégia de investimento, realizou-se o backtest do modelo, verificou-se que o mesmo obteve um bom desempenho acumulando um total de 18 mil PIPS nos períodos de dados desconhecidos de 2011 a 2022 com um stop fixo de 90 pips.
+   
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-09.PNG?raw=true" width="800" height = "400">
+
+### Research Tuning XGboost Parâmetros:
+   
+   
