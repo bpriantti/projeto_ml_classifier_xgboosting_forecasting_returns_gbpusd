@@ -184,4 +184,58 @@ x_train = X[start_train:end_train]
 x_test  = X[start_test:] 
 ```
 
+> Podemos visualizar a separação dos dados com o seguinte com a imagem abaixo:
 
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-06.PNG?raw=true" width="800" height = "400">
+
+### Treinando XGboosting:
+
+```
+#import XGBoost:
+import xgboost as xgb
+from xgboost import XGBClassifier
+
+#parameters:
+params = {
+            'max_depth': 4,
+            'alpha': 10,
+            'learning_rate': 1.0,
+            'n_estimators':100,
+            'ramdom_state':42
+         }
+            
+#instanciando xgboosting:
+xgb_clf = XGBClassifier(**params)
+
+#fit:
+xgb_clf.fit(x_train, y_train['target_bin'])
+
+#parameters:
+print(xgb_clf)
+
+#prediçoes para o treinamento e teste:
+y_train['pred'] = xgb_clf.predict(x_train)
+y_test['pred']  = xgb_clf.predict(x_test)
+
+#---:
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+
+#---:
+print("------------------------------------------------------")
+print('classification_report: train')
+print(classification_report(y_train['target_bin'], y_train['pred']))
+print("------------------------------------------------------")
+print('classification_report: test')
+print(classification_report(y_test['target_bin'], y_test['pred']))
+```
+
+__Resultado:__
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-07.PNG?raw=true" width="400" height = "400">
+   
+> Observou-se os parâmetros do modelo e verificou-se que para houve uma diferença entre as métricas para o treinamento e para o teste, isto se deve a grande componente aleatória para ativos no mercado financeiro, no entanto observamos que para o teste o modelo tem um recall e um precision médio de 0.30 para a compra e venda o que totaliza um accuracy médio de 0.60 para o modelo, podendo assim ser útil observar o desempenho do modelo em um backtest e verificar o retorno da abordagem.
