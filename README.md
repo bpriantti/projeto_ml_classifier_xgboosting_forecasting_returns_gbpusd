@@ -103,24 +103,23 @@ data = data['1995':]
 > Após o tratamento dos dados no processo de data wralling, realizou-se o processo de Data Visualization, que consiste em visualizar a base de dados, para o caso atual foi realizada esta etapa para verificar possíveis inconsistências visíveis na série histórica.
 
 <p align="center">
-   <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-1.png?raw=true"  width="800" height = "460">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-01.png?raw=true"  width="800" height = "460">
    
-### Feature Calculation: 
 
-> Nesta Etapa realizou-se o cálculo das features DI+,DI-,ADX e Retorno Futuro em 2 dias, em seguida visualizou-se o histograma para essas features, utilizando os comandos abaixo.
+   
+### Target Var Calc: 
+
+> Nesta Etapa realizou-se o cálculo da variável alvo, esta que será passada como base para o aprendizado supervisionado do modelo xg boosting, neste projeto a variavel target é o retorno futuro em 2 dias em Pips.
 
 ```
-#calc adx
-database['adx']         = ta.ADX(database['High'],database['Low'],database['Close'],14)
-database['pos_dir_mov'] = ta.PLUS_DI(database['High'],database['Low'],database['Close'],14)
-database['neg_dir_mov'] = ta.MINUS_DI(database['High'],database['Low'],database['Close'],14)
+# Construcao dos alvos
+periodos = 2
 
-#calc retorno futuro
-database['target_var'] = database['Close'].pct_change(2).shift(-2)
-database.dropna(inplace=True)
+# Alvo 1 - Retorno
+database["target"] = database["close"].pct_change(periodos).shift(-periodos)
 
-#visualization:
-database.loc[:,'adx':].hist(figsize = (15,10), rwidth = 0.95);
+# Variaçao em Pips do alvo
+database["target_pips"] = ((database["close"] - database["close"].shift(periodos))*10000).shift(-periodos)
 ```
 
 <p align="center">
