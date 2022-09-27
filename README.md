@@ -1,12 +1,12 @@
-# Projeto Ml Classifier XGboosting Forecasting Returns - GBPUSD
+# Projeto Ml Classifier XGboosting Forecasting Returns - GBP-USD
 
 __Bussines Problem:__
 
-> Durante o desenvolvimento de estratégias de quant trading, que nada mais são do que sistemas objetivos para obter lucros no mercado de renda variável, decidindo a melhor hora para comprar ou vender determinado ativo com base em padrões estatísticos que tiveram uma boa performance no passado, torna-se necessário um estudo quantitativo sobre o indicador de timing ADX,DI+,DI-, idealizado por Willes Wilder, verificando se existe uma parametrização lucrativa para comprar ou vender o ativo PETR4 com base neste indicador.
+> Acertar o melhor momento para realizar uma operação de investimento não é uma tarefa fácil, muitas vezes tentar utilizar estratégias de investimento de forma discricionária pode causar prejuízos financeiros a investidores de grande e pequeno porte, de posse desta informação decidiu-se por meio de técnicas de machine learning desenvolver um modelo quantitativo para prever a direção do ativo GBP-USD(libra esterlina dólar) em comprar, vender e esperar, e por meio da tecnologia e data science conseguir melhor resultados de investimento.
 
 __Objetivo:__
 
-> Desenvolver uma estratégia quantitativa utilizando o conceito de clusterização, por meio do algoritmo k-means em seguida realizar uma análise bivariada entre um alvo de 5 dias para o retorno e os clusters verificando em um rank qual tendeu a ser mais lucrativo para a base de treinamento e em seguida validar isto em uma base de teste.
+> Desenvolver um modelo de machine learning para prever o retorno futuro em 2 dias do ativo GBP-USD, classificando os retornos em alta, baixa e esperar, com base em critérios com base em um threshold definido com base na distribuição dos retornos. Neste projeto optou-se por utilizar o algoritmo de XGboosting.
 
 __Autor:__  
    - Bruno Priantti.
@@ -28,7 +28,7 @@ __Frameworks Utilizados:__
 - Plotly: https://plotly.com/  
 - Scikit learn: https://scikit-learn.org/stable/index.html
 - Statsmodels: https://www.statsmodels.org/stable/index.html
-
+- TA-lib: https://mrjbq7.github.io/ta-lib/doc_index.html
 ___
 
 ## Contents
@@ -64,7 +64,6 @@ import plotly.graph_objects as Dash
 from plotly.subplots import make_subplots
 
 #lib para api com ativos da bolsa:
-import yfinance as yf
 import talib as ta
 
 #---
@@ -74,28 +73,34 @@ warnings.filterwarnings("ignore")
 
 ### Data Request:
 
-> Em seguida realizou-se o processo de data request, com o provedor de dados yfinace, utilizou-se a conexão API com o servidor, realizou-se o request da série histórica para o ativo PETR4, do período de 2005 a 2022, utilizou-se o código abaixo para esta etapa:
+> O primeiro passo para o desenvolvimento é importar a base de dados do ativo GBP-USD, esta que já foi previamente tratada e encontra-se disponível em um repositório do github do próprio autor, abaixo tem-se os comandos para a execução do acesso à base de dados. 
 
 ```
-database = yf.download('PETR4.SA', '2005-1-1','2022-12-31')
+url = 'https://raw.githubusercontent.com/bpriantti/projeto_ml_classifier_forecasting_returns_model_eval/main/files/GBPUSD_Daily_199305120000_202208030000.csv'
+
+data = pd.read_csv(url,sep = '\t')
 ```
 
 ### Data Wralling:
 
-> Em seguida realizou-se o processo de data wralling, que consiste em tratamentos na base de dados para posterior uso dos dados para o desenvolvimento do modelo de machine learning e backtesting, realizou-se esta etapa pelo código abaixo:
+> Em seguida realizou-se o processo de data wralling, que consiste em tratamentos na base de dados para posterior uso dos dados para o desenvolvimento do modelo de machine learning e backtesting, realizou-se esta etapa com o código abaixo:
 
 ```
-database['Open']  = database.Open * database['Adj Close']/database['Close']
-database['High']  = database.High * database['Adj Close']/database['Close']
-database['Low']   = database.Low  * database['Adj Close']/database['Close']
-database['Close'] = database['Adj Close']
+#renanme colunas:
+data.columns = ['date', 'open','high','low','close','tickvol','vol','spread']
+data.drop(['tickvol','vol'],axis = 1, inplace = True)
 
-del database['Adj Close']
-database.dropna(inplace=True)
+#atualizando index para data:
+data['Date'] = pd.to_datetime(data['date']).to_frame()
+data.set_index(data['Date'],inplace = True)
+data.drop(['Date','date'],axis =1, inplace = True)
+
+#utilizando dados apenas de 95 para frente:
+data = data['1995':]
 ```
 ### Data Visualization:
 
-> Após o tratamento dos dados no processo de data wralling, realizou-se o processo de Data Visualization, que consiste em visualizar a base de dados, para o caso atual foi realizada esta etapa para verificar possíveis inconsistência visíveis na série histórica.
+> Após o tratamento dos dados no processo de data wralling, realizou-se o processo de Data Visualization, que consiste em visualizar a base de dados, para o caso atual foi realizada esta etapa para verificar possíveis inconsistências visíveis na série histórica.
 
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_clustering_de_indicadores_de_timming_para_estrategia_de_quant_trading./blob/main/images/image-1.png?raw=true"  width="800" height = "460">
