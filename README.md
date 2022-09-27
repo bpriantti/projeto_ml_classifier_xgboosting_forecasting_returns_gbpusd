@@ -163,7 +163,7 @@ dados = calc_features(database.copy())
    
 ### Train Test Split:
 
-> kjj
+> Para realizar o treino e em seguida o teste do modelo, realizou-se a divisão da base em x_train,x_test,y_train e y_test abaixo segue o código utilizado:
 
 ```
 #x-y split:
@@ -183,3 +183,5 @@ y_test  = y[start_test:]
 x_train = X[start_train:end_train]
 x_test  = X[start_test:] 
 ```
+
+
