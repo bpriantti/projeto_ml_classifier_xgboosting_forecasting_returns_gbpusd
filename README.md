@@ -45,7 +45,10 @@ ___
  - [Backtest Modelo](#backtest-modelo)
  - [Research Tuning XGboost Parâmetros](#research-tuning-xgboost-parâmetros)
  - [Re-Fit XGboosting Otimizado](#re-fit-xgboosting-otimizado)
- - [Verificando Feature Importance XGboosting Otimizado](verificando-feature-importance-xgboosting-otimizado)
+ - [Feature Importance XGboosting Opt](#feature-importance-xgboosting-opt)
+ - [Comparando Modelo Xgboosting No Opt vs With Opt](#comparando-modelo-xgboosting-no-opt-vs-with-opt)
+ - [Conclusão e Trabalhos Futuros](#conclusão-e-trabalhos-futuros)
+
  
 ### Importando Libraries:
 > inicialmente para este projeto realizou-se o import das bibliotecas que serao utilizadas para machine learning, data wralling e data visualization dos dados, utilizou-se os comandos abaixo para esta etapa:
@@ -292,7 +295,7 @@ __Rank Modelos Otimizados:__
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-15.PNG?raw=true" width="400" height = "400">
    
-### Verificando Feature Importance XGboosting Otimizado:
+### Feature Importance XGboosting Opt:
 
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-16.PNG?raw=true" width="600" height = "300">
@@ -302,12 +305,18 @@ __Rank Modelos Otimizados:__
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-17.PNG?raw=true" width="800" height = "400">
    
-### Comparando Modelo Xgboosting No Opt vs Opt:
+### Comparando Modelo Xgboosting No Opt vs With Opt:
 
+__Comparando Métricas dos Modelos:__
+
+
+
+__Comparando Equity Backtest dos Modelos:__
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-18.PNG?raw=true" width="800" height = "400">
-   
+
+__Comparando Pips Acumulados dos Modelos:__
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-19.PNG?raw=true" width="800" height = "400">
 
-### Conclusoes e Trabalhos Futuros:
+### Conclusão e Trabalhos Futuros:
