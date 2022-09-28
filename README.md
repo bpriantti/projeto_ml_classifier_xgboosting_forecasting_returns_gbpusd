@@ -44,7 +44,9 @@ ___
  - [Verificando Feature Importance](#verificando-feature-importance)
  - [Backtest Modelo](#backtest-modelo)
  - [Research Tuning XGboost Parâmetros](#research-tuning-xgboost-parâmetros)
-
+ - [Re-Fit XGboosting Otimizado](#re-fit-xgboosting-otimizado)
+ - [Verificando Feature Importance XGboosting Otimizado](verificando-feature-importance-xgboosting-otimizado)
+ 
 ### Importando Libraries:
 > inicialmente para este projeto realizou-se o import das bibliotecas que serao utilizadas para machine learning, data wralling e data visualization dos dados, utilizou-se os comandos abaixo para esta etapa:
 
@@ -254,10 +256,58 @@ __Resultado:__
 ### Backtest Modelo:
    
 > Para verificar a performance do algoritmo como estratégia de investimento, realizou-se o backtest do modelo, verificou-se que o mesmo obteve um bom desempenho acumulando um total de 18 mil PIPS nos períodos de dados desconhecidos de 2011 a 2022 com um stop fixo de 90 pips.
-   
+
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-09.PNG?raw=true" width="800" height = "400">
 
 ### Research Tuning XGboost Parâmetros:
+
+__Comportamento Opt Max Depth:__
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-10.PNG?raw=true" width="580" height = "300">
+
+__Comportamento Opt Alpha:__
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-11.PNG?raw=true" width="580" height = "300">
+
+__Comportamento Opt Learning Rate:__
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-12.PNG?raw=true" width="580" height = "300">
    
+__Comportamento Opt N estimators:__
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-13.PNG?raw=true" width="580" height = "300">
+
+__Rank Modelos Otimizados:__
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-14.PNG?raw=true" width="280" height = "180">
+ 
+### Re-Fit XGboosting Otimizado:
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-15.PNG?raw=true" width="400" height = "400">
    
+### Verificando Feature Importance XGboosting Otimizado:
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-16.PNG?raw=true" width="600" height = "300">
+   
+### Backtest Modelo Otimizado:
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-17.PNG?raw=true" width="800" height = "400">
+   
+### Comparando Modelo Xgboosting No Opt vs Opt:
+
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-18.PNG?raw=true" width="800" height = "400">
+   
+<p align="center">
+   <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-19.PNG?raw=true" width="800" height = "400">
+
+### Conclusoes e Trabalhos Futuros:
