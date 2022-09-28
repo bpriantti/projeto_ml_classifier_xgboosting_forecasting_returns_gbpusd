@@ -265,6 +265,15 @@ __Resultado:__
 
 ### Research Tuning XGboost Parâmetros:
 
+> Com o objetivo de melhorar a performance do modelo realizou-se o processo de tuning dos hiperparâmetros pelo método empírico, inicialmente realizou-se um estudo do comportamento do modelo variando apenas um parâmetro com os outros mantidos constantes, os parâmetros utilizados para a otimização foram:
+
+- Max Depth
+- Alpha
+- Learnig Rate
+- N estimators
+
+> Abaixo, tem-se o desempenho dos testes de comportamento para quando se varia cada parâmetro.
+
 __Comportamento Opt Max Depth:__
 
 <p align="center">
@@ -287,29 +296,40 @@ __Comportamento Opt N estimators:__
 
 __Rank Modelos Otimizados:__
 
+> Com a análise do comportamento dos modelos observou-se que os parâmetros alpha e n estimators possuem pouco efeito sobre a performance do modelo, diante deste fato optou-se por otimizar apenas os parâmetros:
+
+- Max Depth
+- Learning Rate
+
+> Após realizar o treinamento e teste do modelo variando os parâmetros acima, realizou-se um rank para verificar a melhor parametrização encontrada em termos de precision score, como demonstrado na tabela abaixo:
+
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-14.PNG?raw=true" width="280" height = "180">
  
 ### Re-Fit XGboosting Otimizado:
+
+> Encontrado os melhores parâmetros para o modelo, realizou-se o processo de re-fit que consiste em re-treinar o modelo com as novas parametrizações encontradas na otimização a partir deste ponto verificou-se também as métricas de avaliação de um modelo de classificação observando a melhora em termos de precision, recall e também f1 score. 
 
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-15.PNG?raw=true" width="400" height = "400">
    
 ### Feature Importance XGboosting Opt:
 
+> Verificou-se também o feature importance para o modelo e não se observou grandes mudanças em relação a este score.
+
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-16.PNG?raw=true" width="600" height = "300">
    
 ### Backtest Modelo Otimizado:
+
+> Com o objetivo de realizar uma análise da performance do modelo realizou-se o processo de backtest, que consiste em testar uma estratégia no passado, observou-se que o modelo otimizado teve um acumulado de 24 mil pips.
 
 <p align="center">
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-17.PNG?raw=true" width="800" height = "400">
    
 ### Comparando Modelo Xgboosting No Opt vs With Opt:
 
-__Comparando Métricas dos Modelos:__
-
-
+> Para verificar qual foi o melhor modelo, realizou-se a comparação entre o modelo otimizado e o não otimizado, observou-se a performance superior do modelo otimizado e também verificou-se que o mesmo não possui anos negativos, sendo esta uma performance satisfatória pois foi um total de 10 anos de teste em dados desconhecidos.
 
 __Comparando Equity Backtest dos Modelos:__
 <p align="center">
@@ -320,3 +340,5 @@ __Comparando Pips Acumulados dos Modelos:__
    <img src="https://github.com/bpriantti/projeto_ml_classifier_xgboosting_forecasting_returns_gbpusd/blob/main/images/image-19.PNG?raw=true" width="800" height = "400">
 
 ### Conclusão e Trabalhos Futuros:
+
+> Pode-se concluir que o uso do xgboosting para o predict de retornos futuros em 2 dias realiza uma performance satisfatória, resolvendo o problema listado no bussines problem, destaca-se que o modelo de xgboosting nao tem anos negativos sendo isto um feito admirável no desenvolvimento, como trabalhos futuros planeja-se melhorar o hypertunning dos parâmetros e incluir mais features de entropia para o modelo.
