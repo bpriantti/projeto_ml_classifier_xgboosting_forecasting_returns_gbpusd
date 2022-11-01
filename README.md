@@ -53,7 +53,7 @@ ___
 ### Importando Libraries:
 > inicialmente para este projeto realizou-se o import das bibliotecas que serao utilizadas para machine learning, data wralling e data visualization dos dados, utilizou-se os comandos abaixo para esta etapa:
 
-```
+```python
 #import libs:
 import pandas as pd
 import numpy as np
@@ -81,7 +81,7 @@ warnings.filterwarnings("ignore")
 
 > O primeiro passo para o desenvolvimento é importar a base de dados do ativo GBP-USD, esta que já foi previamente tratada e encontra-se disponível em um repositório do github do próprio autor, abaixo tem-se os comandos para a execução do acesso à base de dados. 
 
-```
+```python
 url = 'https://raw.githubusercontent.com/bpriantti/projeto_ml_classifier_forecasting_returns_model_eval/main/files/GBPUSD_Daily_199305120000_202208030000.csv'
 
 data = pd.read_csv(url,sep = '\t')
@@ -116,7 +116,7 @@ data = data['1995':]
 
 > Nesta Etapa realizou-se o cálculo da variável alvo, esta que será passada como base para o aprendizado supervisionado do modelo xg boosting, neste projeto a variável target é o retorno futuro em 2 dias em Pips, em seguida analisou-se a distribuição da variável alvo.
 
-```
+```python
 # Construcao dos alvos
 periodos = 2
 
@@ -138,7 +138,7 @@ database["target_pips"] = ((database["close"] - database["close"].shift(periodos
  
  para isso utilizou-se o código a seguir:
  
- ```
+```python
 # criacao do alvo binario:
 database["target_bin"] = np.where(database['target_pips'] >  50 , 1, 0)
 database["target_bin"] = np.where(database['target_pips'] < -50 ,-1, database['target_bin'])
@@ -148,7 +148,7 @@ database["target_bin"] = np.where(database['target_pips'] < -50 ,-1, database['t
  
 > A próxima etapa para o projeto é o processo de feature engineering que consiste em calcular as features para o modelo, estas que também são chamadas de variáveis dependentes, para isso utilizou-se o código a seguir:
 
-```
+```python
 #---:
 def calc_features(df1):
 
@@ -174,7 +174,7 @@ dados = calc_features(database.copy())
 
 > Para realizar o treino e em seguida o teste do modelo, realizou-se a divisão da base em x_train,x_test,y_train e y_test abaixo segue o código utilizado:
 
-```
+```python
 #x-y split:
 y = dados.loc[:,'target_pips':'target_bin']
 X = dados.loc[:,'var_1':]
@@ -200,7 +200,7 @@ x_test  = X[start_test:]
 
 ### Treinando-Avaliando XGboosting:
 
-```
+```python
 #import XGBoost:
 import xgboost as xgb
 from xgboost import XGBClassifier
