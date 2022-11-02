@@ -91,7 +91,7 @@ data = pd.read_csv(url,sep = '\t')
 
 > Em seguida realizou-se o processo de data wralling, que consiste em tratamentos na base de dados para posterior uso dos dados para o desenvolvimento do modelo de machine learning e backtesting, realizou-se esta etapa com o código abaixo:
 
-```
+```python
 #renanme colunas:
 data.columns = ['date', 'open','high','low','close','tickvol','vol','spread']
 data.drop(['tickvol','vol'],axis = 1, inplace = True)
